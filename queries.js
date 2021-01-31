@@ -7,7 +7,7 @@ const pool = new Pool({
 })
 
 const getCircuits = (req, res) => {
-    pool.query('SELECT * FROM circuits ORDER BY "circuitId" ASC', (err, result) => {
+    pool.query('SELECT * FROM circuits ORDER BY circuitid ASC', (err, result) => {
         if (err) {
             throw err
         }
@@ -18,7 +18,7 @@ const getCircuits = (req, res) => {
 const getCircuitById = (req, res) => {
     const id = parseInt(req.params.id)
 
-    pool.query('SELECT * FROM circuits WHERE "circuitId" = $1', [id], (err, result) => {
+    pool.query('SELECT * FROM circuits WHERE circuitid = $1', [id], (err, result) => {
         if (err) {
             throw err
         }
