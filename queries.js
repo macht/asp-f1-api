@@ -67,13 +67,11 @@ const getConstructorById = (req, res) => {
 }
 
 const getConstructorByName = (req, res) => {
-    const name = ("%" + req.params.name + "%")
-
-    pool.query('SELECT * FROM constructors WHERE name LIKE $1', [name], (err, result) => {
+    pool.query('SELECT * FROM constructors WHERE name ILIKE $1', ['%' + req.params.name + '%'], (err, result) => {
         if (err) {
             throw err
         }
-        res.status(200),json(result.rows)
+        res.status(200).json(result.rows)
     })
 }
 
@@ -98,13 +96,11 @@ const getDriverById = (req, res) => {
 }
 
 const getDriverByName = (req, res) => {
-    const name = ("%" + req.params.name + "%")
-
-    pool.query('SELECT * FROM drivers WHERE forename LIKE $1 OR surname LIKE $1', [name], (err, result) => {
+    pool.query('SELECT * FROM drivers WHERE forename LIKE $1 OR surname ILIKE $1', ['%' + req.params.name + '%'], (err, result) => {
         if (err) {
             throw err
         }
-        res.status(200),json(result.rows)
+        res.status(200).json(result.rows)
     })
 }
 
