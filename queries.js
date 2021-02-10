@@ -36,7 +36,7 @@ const getSeasons = (req, res) => {
 }
 
 const getSeasonByYear = (req, res) => {
-    const id = parseInt(req.params.year)
+    const year = parseInt(req.params.year)
 
     pool.query('SELECT * FROM seasons WHERE year = $1', [year], (err, result) => {
         if (err) {
