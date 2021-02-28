@@ -1,10 +1,18 @@
 const Pool = require('pg').Pool
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL
-    // ssl: {
-    //     rejectUnauthorized: false
-    // }
-})
+const { parse } = require('pg-connection-string')
+
+const config = parse(process.env.DATABASE_URL)
+let pool;
+
+if (process.env.DATABASE_URL.includes("localhost")) {
+    pool = new Pool(config)
+}
+else {
+    config.ssl = {
+        rejectUnauthorized: false
+    }
+    pool = new Pool(config)
+}
 
 const getCircuits = (req, res) => {
     pool.query('SELECT * FROM circuits ORDER BY circuitid ASC', (err, result) => {
