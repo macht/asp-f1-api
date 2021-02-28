@@ -1,9 +1,9 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
+    connectionString: process.env.DATABASE_URL
+    // ssl: {
+    //     rejectUnauthorized: false
+    // }
 })
 
 const getCircuits = (req, res) => {
@@ -104,6 +104,36 @@ const getDriverByName = (req, res) => {
     })
 }
 
+const getRacesByCircuit = (req, res) => {
+    const id = parseInt(req.params.id)
+
+    pool.query('SELECT r.raceid, r.year, r.circuitid, r.name, r.date, d.forename || \' \' || d.surname as winner, re.time, c.name as constructor '
+    + 'FROM races r LEFT JOIN results re on r.raceid = re.raceid AND re.position = 1 '
+    + 'LEFT JOIN drivers d on re.driverid = d.driverid '
+    + 'LEFT JOIN constructors c on re.constructorid = c.constructorid '
+    + 'WHERE r.circuitid = $1;', [id], (err, result) => {
+        if (err) {
+            throw err
+        }
+        res.status(200).json(result.rows)
+    })
+}
+
+const getRacesBySeason = (req, res) => {
+    const year = parseInt(req.params.year)
+
+    pool.query('SELECT r.raceid, r.year, r.circuitid, r.name, r.date, d.forename || \' \' || d.surname as winner, re.time, c.name as constructor '
+    + 'FROM races r LEFT JOIN results re on r.raceid = re.raceid AND re.position = 1 '
+    + 'LEFT JOIN drivers d on re.driverid = d.driverid '
+    + 'LEFT JOIN constructors c on re.constructorid = c.constructorid '
+    + 'WHERE r.year = $1;', [year], (err, result) => {
+        if (err) {
+            throw err
+        }
+        res.status(200).json(result.rows)
+    })
+}
+
 module.exports = {
     getCircuits,
     getCircuitById,
@@ -114,5 +144,7 @@ module.exports = {
     getConstructorByName,
     getDrivers,
     getDriverById,
-    getDriverByName
+    getDriverByName,
+    getRacesByCircuit,
+    getRacesBySeason
 }

@@ -18,4 +18,6 @@ app
     .get('/drivers', db.getDrivers)
     .get('/drivers/:id', db.getDriverById)
     .get('/drivers/search/:name', db.getDriverByName)
+    .get('/races/circuit/:id', db.getRacesByCircuit)
+    .get('/races/season/:year', db.getRacesBySeason)
     .listen(PORT, () => console.log(`Listening on port ${ PORT }`))
