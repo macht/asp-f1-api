@@ -32,4 +32,5 @@ app
     .get('/races', db.getRaces)
     .get('/races/circuit/:id', db.getRacesByCircuit)
     .get('/races/season/:year', db.getRacesBySeason)
-    .listen(PORT, () => console.log(`Listening on port ${ PORT }`))
+
+module.exports = app.listen(PORT, () => console.log(`Listening on port ${ PORT }`))
